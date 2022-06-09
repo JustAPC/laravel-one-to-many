@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\Post;
+use App\Models\Category;
 
 class PostController extends Controller
 {
@@ -19,11 +20,11 @@ class PostController extends Controller
 
         if ($request->has('title')) {
 
-            $title = $request -> query('title');
+            $title = $request->query('title');
 
-            $posts = Post::where('title', 'like', '%'.$title.'%')->get();
+            $posts = Post::where('title', 'like', '%' . $title . '%')->get();
         } else {
-            $posts = Post::all();
+            $posts = Post::orderBy('updated_at', 'DESC')->paginate(5);
         }
 
         return view('user.posts.index', compact('posts'));
@@ -36,7 +37,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('user.posts.create');
+        $categories = Category::all();
+
+        return view('user.posts.create', compact('categories'));
     }
 
     /**
@@ -76,7 +79,9 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('user.posts.edit', compact('post'));
+        $categories = Category::all();
+
+        return view('user.posts.edit', compact('post', 'categories'));
     }
 
     /**

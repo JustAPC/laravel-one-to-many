@@ -20,10 +20,10 @@
     <div class="bg-dark">
         <div class="d-flex justify-content-between">
             <a href="{{ route('user.posts.create') }}" class="btn btn-success fs-5 my-3 ml-3">New Post</a>
-            <form class="form-inline mr-3" method="GET" action="{{route('user.posts.index')}}">
+            <form class="form-inline mr-3" method="GET" action="{{ route('user.posts.index') }}">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" name="title">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-              </form>
+            </form>
         </div>
 
         <table class="mb-0 pb-3 table table-hover table-dark">
@@ -32,6 +32,7 @@
                     <th scope="col">Title</th>
                     <th scope="col">Content</th>
                     <th scope="col">Slug</th>
+                    <th scope="col">Category</th>
                     <th scope="col">Image</th>
                     <th scope="col">Actions</th>
                 </tr>
@@ -42,6 +43,14 @@
                         <th scope="row">{{ $post->title }}</th>
                         <td class="col-3">{{ $post->content }}</td>
                         <td>{{ $post->slug }}</td>
+                        <td class="col-1">
+                            @if ($post->Category)
+                                <span class="badge badge-pill badge-{{ $post->Category->color }}"
+                                    style="font-size: 1rem">{{ $post->Category->label }}</span>
+                            @else
+                                -
+                            @endif
+                        </td>
                         <td><img src="{{ $post->image }}" alt="" width="80px"></td>
                         <td class="col-2">
                             <a href="{{ route('user.posts.show', $post->id) }}" class="btn btn-primary mr-2">View</a>
@@ -59,5 +68,10 @@
                 @endforelse
             </tbody>
         </table>
+    </div>
+    <div class="bg-dark py-3 pl-5">
+        @if ($posts->hasPages())
+            {{ $posts->links() }}
+        @endif
     </div>
 @endsection

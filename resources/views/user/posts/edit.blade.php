@@ -23,6 +23,18 @@
                         <textarea name="content" id="content" cols="30" rows="10">{{ $post->content }}</textarea>
                     </div>
                 </div>
+
+                <div class="media-body col-2">
+                    <label for="category">Category</label>
+                    <select name="category_id" id="category">
+                        <option value="">Seleziona una Categoria...</option>
+                        @foreach ($categories as $category)
+                            <option @if (old('category_id', $post->category_id) == $category->id) selected @endif value=" {{ $category->id }} ">
+                                {{ $category->label }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
             </div>
             <div class="pt-5 text-center">
                 <button type="submit" class="btn btn-success fs-4">Save</button>
